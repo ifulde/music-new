@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.musicai.mapper.PlayHistoryMapper">
+    <resultMap id="PlayHistoryResultMap" type="PlayHistory">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="songId" column="song_id"/>
+        <result property="playedAt" column="played_at"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO play_history (user_id, song_id, played_at)
+        VALUES (#{userId}, #{songId}, #{playedAt})
+    </insert>
+
+    <select id="findByUserId" resultMap="PlayHistoryResultMap">
+        SELECT * FROM play_history
+        WHERE user_id = #{userId}
+        ORDER BY played_at DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="countByUserId" resultType="long">
+        SELECT COUNT(*) FROM play_history WHERE user_id = #{userId}
+    </select>
+</mapper>
+

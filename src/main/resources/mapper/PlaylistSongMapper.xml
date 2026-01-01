@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.musicai.mapper.PlaylistSongMapper">
+    <resultMap id="PlaylistSongResultMap" type="PlaylistSong">
+        <id property="id" column="id"/>
+        <result property="playlistId" column="playlist_id"/>
+        <result property="songId" column="song_id"/>
+        <result property="createdAt" column="created_at"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO playlist_songs (playlist_id, song_id, created_at)
+        VALUES (#{playlistId}, #{songId}, #{createdAt})
+    </insert>
+
+    <select id="findSongIdsByPlaylistId" resultType="long">
+        SELECT song_id FROM playlist_songs WHERE playlist_id = #{playlistId} ORDER BY created_at ASC
+    </select>
+
+    <select id="findByPlaylistIdAndSongId" resultMap="PlaylistSongResultMap">
+        SELECT * FROM playlist_songs WHERE playlist_id = #{playlistId} AND song_id = #{songId}
+    </select>
+
+    <delete id="deleteByPlaylistIdAndSongId">
+        DELETE FROM playlist_songs WHERE playlist_id = #{playlistId} AND song_id = #{songId}
+    </delete>
+
+    <delete id="deleteByPlaylistId">
+        DELETE FROM playlist_songs WHERE playlist_id = #{playlistId}
+    </delete>
+</mapper>
+
